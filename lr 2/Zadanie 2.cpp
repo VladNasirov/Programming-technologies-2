@@ -25,12 +25,16 @@ void intext()
 		cout << exception_open_file << "text.txt" << endl;
 		out.close();
 	}
+	cout << "Текст введен!" << endl;
+	system("pause");
 }
 
 void cleartext()
 {
 	fstream clear_file("text.txt", ios::out);
 	clear_file.close();
+	cout << "Текст отчищен!" << endl;
+	system("pause");
 }
 
 void randomtext()
@@ -46,7 +50,7 @@ void randomtext()
 		{
 			if (out.is_open())
 			{
-				out << char(rand() % 26 + ' ');
+				out << char(rand() % 100 + ' ');
 			}
 			else if (!out.is_open())
 			{
@@ -60,18 +64,23 @@ void randomtext()
 		cout << exception_open_file << "text.txt" << endl;
 		out.close();
 	}
+	cout << "Текст введен!" << endl;
+	system("pause");
 }
 
 void print_menu_p2()
 {
-	cout << "1.Ввод своего текста.\n2.Очистить файл.\n3.Заполнить файл случайными символами.\n4.Найти самое длинное слово.\n5.Выход." << endl;
+	cout << "1.Ввод своего текста(если текст состоит из нескольких строк, то занесите его в файл text.txt).\n2.Очистить файл.\n3.Заполнить файл случайными символами.\n4.Найти самое длинное слово.\n5.Выход." << endl;
 }
 
 void findmax()
 {
 	int max = 0;
+	int count_of_max=0;
 	int tempmax = 0;
-	int maxslovopos;
+	int count_of_equal_size_word = 0;
+	int flagslovo = 0;
+	int wordcount = 0;
 	ifstream in;
 	string massin;
 	string symb;
@@ -99,54 +108,103 @@ void findmax()
 	}
 	for (int i = 0; i < size(massin); i++)
 	{
-		if (massin[i] ==' '|| massin[i]=='.'||massin[i]==','||massin[i]=='?'||massin[i]=='!'||massin[i]=='\n'||massin[i]=='\0'||massin[i]==':'||massin[i]==';'||massin[i]=='\''||massin[i]=='$'|| massin[i] =='+'|| massin[i] =='-'|| massin[i] =='*'|| massin[i] == '/'|| massin[i] == '%'|| massin[i] == '"'|| massin[i] == '#'|| massin[i] == '('|| massin[i] == ')'|| massin[i] == '&')
+		if (massin[i] == ' ' || massin[i] == '.' || massin[i] == ',' || massin[i] == '?' || massin[i] == '!' || massin[i] == '\n' || massin[i] == '\0' || massin[i] == ':' || massin[i] == ';' || massin[i] == '\'' || massin[i] == '$' || massin[i] == '+' || massin[i] == '-' || massin[i] == '*' || massin[i] == '/' || massin[i] == '%' || massin[i] == '"' || massin[i] == '#' || massin[i] == '(' || massin[i] == ')' || massin[i] == '&'|| massin[i]=='['|| massin[i]==']'|| massin[i]=='{'|| massin[i]=='}'|| massin[i]=='^'|| massin[i]=='%'|| massin[i]=='№'|| massin[i]=='='|| massin[i]=='_'|| massin[i]=='@'|| massin[i]=='<'|| massin[i] == '>')
 		{
-			tempmax = 0;
-		}
-		else//найдено слово
-		{
-			tempmax++;
-		}
-		if (tempmax>max)
-		{
-			maxslovopos = i-max; //позиция первого символа максимального слова
-			max = tempmax;
-		}
-	}
-	cout << "Строка: " << endl;
-	cout << massin << endl;
-	cout <<"Начало макс. слова: "<< maxslovopos << endl;
-	cout <<"Длинна максю слова: "<< max << endl;
-	string word;
-	for (int j=0; j<size(massin); j++)
-	{
-		if ((j >= maxslovopos) && (j < maxslovopos + max))
-		{
-			word+=massin[j];
-		}
-	}
-	string keyword=word;
-	int cnt=0;
-	for (int i = 0; i < size(massin); i++)
-	{
-		if (!(massin[i] == ' ' || massin[i] == '.' || massin[i] == ',' || massin[i] == '?' || massin[i] == '!' || massin[i] == '\n' || massin[i] == '\0' || massin[i] == ':' || massin[i] == ';'))
-		{
-			word += massin[i];
+			if (flagslovo == 1)
+			{
+				flagslovo = 0;
+			}
 		}
 		else
 		{
-			if (word == keyword)
+			if (flagslovo == 0)
 			{
-				cnt++;
+				flagslovo = 1;
+				wordcount++;
 			}
-			word.clear();
 		}
 	}
-
-	cout <<"Самое длинное слово: "<< keyword << endl;
-	cout <<"Встречается в тексте: "<< cnt <<" раз."<< endl;
+	cout <<"Текст: \n"<< massin << endl;
+	cout <<"Кол-во слов в тексте: "<< wordcount << endl;
+	int j = -1;
+	Word* slovo = new Word[wordcount];
+	for (int i = 0; i < size(massin); i++)
+	{
+		if (massin[i] == ' ' || massin[i] == '.' || massin[i] == ',' || massin[i] == '?' || massin[i] == '!' || massin[i] == '\n' || massin[i] == '\0' || massin[i] == ':' || massin[i] == ';' || massin[i] == '\'' || massin[i] == '$' || massin[i] == '+' || massin[i] == '-' || massin[i] == '*' || massin[i] == '/' || massin[i] == '%' || massin[i] == '"' || massin[i] == '#' || massin[i] == '(' || massin[i] == ')' || massin[i] == '&' || massin[i] == '[' || massin[i] == ']' || massin[i] == '{' || massin[i] == '}' || massin[i] == '^' || massin[i] == '%' || massin[i] == '№' || massin[i] == '=' || massin[i] == '_' || massin[i] == '@' || massin[i] == '<' || massin[i] == '>')
+		{
+			if (flagslovo == 1)
+			{
+				flagslovo = 0;
+			}
+		}
+		else
+		{
+			if (flagslovo == 0)
+			{
+				flagslovo = 1;
+				j++;
+			}
+			slovo[j] += massin[i];
+		}
+	}
+	Word maxslovo;
+	for (int i = 0; i < wordcount; i++)
+	{
+		if (slovo[i].getlenght() > max)
+		{
+			max = slovo[i].getlenght();
+			maxslovo= slovo[i];
+		}
+		else if (slovo[i].getlenght() == max)
+		{
+			count_of_max++;
+			if (slovo[i].getword() == maxslovo.getword())
+			{
+				slovo[i].addmeettimes();
+			}
+			else
+			{
+				count_of_equal_size_word++;
+			}
+		}
+	}
+	j = 0;
+	if (count_of_equal_size_word > 0)
+	{
+		Word* maxwords = new Word[count_of_max+1];
+		for (int i = 0; i < wordcount; i++)
+		{
+			if (slovo[i].getlenght() == max)
+			{
+				maxwords[j++] = slovo[i];
+			}
+		}
+		for (int i = 1; i < count_of_max; i++)
+		{
+			for (int k = 0; k < count_of_max+1; k++)
+			{
+				if ((maxwords[i].getword() == maxwords[k].getword())&&(i!=k))
+				{
+					maxwords[i].addmeettimes();
+					maxwords[k].deleteword();
+				}
+			}
+		}
+		for (int i = 0; i < count_of_max + 1; i++)
+		{
+			if (maxwords[i].getword() != "")
+			{
+				cout << maxwords[i].getword() <<"\t длина слова: "<<maxwords[i].getlenght() << " встречалось в тексте: "<<maxwords[i].getmeettimes()<< endl;
+			}
+		}
+	}
+	else 
+	{
+		cout <<"Самое длинное слово в тексте: "<< maxslovo.getword()<<" длинною: "<<maxslovo.getlenght()<<" встречалось в тексте : "<<maxslovo.getmeettimes()<< endl;
+	}
 	system("pause");
 }
+	
 void menu_p2()
 {
 	int choice;
